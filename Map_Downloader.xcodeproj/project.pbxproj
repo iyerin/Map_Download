@@ -12,7 +12,7 @@
 		093E35EA236B2DD2007ED4CF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 093E35E8236B2DD2007ED4CF /* Main.storyboard */; };
 		093E35EC236B2DD2007ED4CF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 093E35EB236B2DD2007ED4CF /* Assets.xcassets */; };
 		093E35EF236B2DD2007ED4CF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 093E35ED236B2DD2007ED4CF /* LaunchScreen.storyboard */; };
-		093E35F7236B2E22007ED4CF /* Books.xml in Resources */ = {isa = PBXBuildFile; fileRef = 093E35F6236B2E22007ED4CF /* Books.xml */; };
+		7829121A236B7DA5005CE012 /* regions.xml in Resources */ = {isa = PBXBuildFile; fileRef = 78291219236B7DA5005CE012 /* regions.xml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,7 +23,7 @@
 		093E35EB236B2DD2007ED4CF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		093E35EE236B2DD2007ED4CF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		093E35F0236B2DD2007ED4CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		093E35F6236B2E22007ED4CF /* Books.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = Books.xml; path = ../../Books.xml; sourceTree = "<group>"; };
+		78291219236B7DA5005CE012 /* regions.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = regions.xml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,7 +58,7 @@
 			children = (
 				093E35E4236B2DD2007ED4CF /* AppDelegate.swift */,
 				093E35E6236B2DD2007ED4CF /* ViewController.swift */,
-				093E35F6236B2E22007ED4CF /* Books.xml */,
+				78291219236B7DA5005CE012 /* regions.xml */,
 				093E35E8236B2DD2007ED4CF /* Main.storyboard */,
 				093E35EB236B2DD2007ED4CF /* Assets.xcassets */,
 				093E35ED236B2DD2007ED4CF /* LaunchScreen.storyboard */,
@@ -127,8 +127,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				093E35EF236B2DD2007ED4CF /* LaunchScreen.storyboard in Resources */,
+				7829121A236B7DA5005CE012 /* regions.xml in Resources */,
 				093E35EC236B2DD2007ED4CF /* Assets.xcassets in Resources */,
-				093E35F7236B2E22007ED4CF /* Books.xml in Resources */,
 				093E35EA236B2DD2007ED4CF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
