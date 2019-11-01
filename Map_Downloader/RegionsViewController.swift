@@ -10,12 +10,15 @@ import UIKit
 
 class RegionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    var country: Country?
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-     return 3
+     return country?.regions.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell =  regionsTable.dequeueReusableCell(withIdentifier: "RegionCell") as! RegionTableViewCell
+        print (country?.regions[indexPath.row].name)
         return cell
     }
     

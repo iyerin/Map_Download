@@ -28,6 +28,7 @@ class CountryTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         downloadButton.isHidden = false
+        toRegionsButton.isHidden = false
         country = nil
         delegate = nil
     }

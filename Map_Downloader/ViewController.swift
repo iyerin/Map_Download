@@ -148,6 +148,9 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, 
         if countries[indexPath.row].map == false {
             cell.downloadButton.isHidden = true
         }
+        if countries[indexPath.row].regions.isEmpty {
+            cell.toRegionsButton.isHidden = true
+        }
         cell.toRegionsButton.setImage(UIImage(named: "right_arrow"), for: .normal)
         cell.delegate = self
         cell.country = countries[indexPath.row]
@@ -192,7 +195,7 @@ extension ViewController: CountryCellDelegate {
         print(country.regions)
         let storyBoard = UIStoryboard(name: "Main", bundle:nil)
         let regionsViewController = storyBoard.instantiateViewController(withIdentifier: "RegionsViewController") as! RegionsViewController
-        
+        regionsViewController.country = country
         self.navigationController?.pushViewController(regionsViewController, animated:true)
     }
 }
