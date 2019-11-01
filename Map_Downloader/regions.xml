@@ -381,7 +381,7 @@
 					<region name="south-west-england" translate="South West England;entity=relation" srtm="no" hillshade="no"/>
 					<region name="west-midlands" translate="West Midlands;entity=relation" srtm="no" hillshade="no"/>
 					<region name="yorkshire-and-the-humber" translate="Yorkshire and the Humber;entity=relation" srtm="no" hillshade="no"/>
-					<region name="channel-islands" translate="=Channel Islands" hillshade="no"> <!-- TODO: add translations -->
+					<region name="channel-islands" translate="=Channel Islands" hillshade="no">
 						<region name="jersey" map="no"/>
 						<region name="guernsey" translate="Guernsey;admin_level=2;entity=relation" map="no" hillshade="no"/>
 					</region>
