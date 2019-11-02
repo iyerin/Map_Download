@@ -9,5 +9,11 @@
 import UIKit
 
 class RegionTableViewCell: UITableViewCell {
-
+    @IBOutlet weak var mapIcon: UIImageView!
+    @IBOutlet weak var regionName: UILabel!
+    @IBOutlet weak var downloadButton: UIButton!
+    @IBAction func toDownload(_ sender: UIButton) {
+        
+    }
+    
 }

@@ -15,7 +15,6 @@
 		09631F58236C93AC00F09CBD /* RegionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09631F57236C93AC00F09CBD /* RegionsViewController.swift */; };
 		09B6FE21236C5F8F004AB6BA /* CountryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B6FE20236C5F8F004AB6BA /* CountryTableViewCell.swift */; };
 		09B6FE23236C6863004AB6BA /* RegionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B6FE22236C6863004AB6BA /* RegionTableViewCell.swift */; };
-		09E2EE73236C21AE001F5E42 /* Books.xml in Resources */ = {isa = PBXBuildFile; fileRef = 09E2EE72236C21AE001F5E42 /* Books.xml */; };
 		7829121A236B7DA5005CE012 /* regions.xml in Resources */ = {isa = PBXBuildFile; fileRef = 78291219236B7DA5005CE012 /* regions.xml */; };
 /* End PBXBuildFile section */
 
@@ -30,7 +29,6 @@
 		09631F57236C93AC00F09CBD /* RegionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionsViewController.swift; sourceTree = "<group>"; };
 		09B6FE20236C5F8F004AB6BA /* CountryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryTableViewCell.swift; sourceTree = "<group>"; };
 		09B6FE22236C6863004AB6BA /* RegionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionTableViewCell.swift; sourceTree = "<group>"; };
-		09E2EE72236C21AE001F5E42 /* Books.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = Books.xml; path = ../../Books.xml; sourceTree = "<group>"; };
 		78291219236B7DA5005CE012 /* regions.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = regions.xml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,7 +64,6 @@
 			children = (
 				093E35E4236B2DD2007ED4CF /* AppDelegate.swift */,
 				093E35E6236B2DD2007ED4CF /* ViewController.swift */,
-				09E2EE72236C21AE001F5E42 /* Books.xml */,
 				78291219236B7DA5005CE012 /* regions.xml */,
 				093E35E8236B2DD2007ED4CF /* Main.storyboard */,
 				09631F57236C93AC00F09CBD /* RegionsViewController.swift */,
@@ -138,7 +135,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				09E2EE73236C21AE001F5E42 /* Books.xml in Resources */,
 				093E35EF236B2DD2007ED4CF /* LaunchScreen.storyboard in Resources */,
 				7829121A236B7DA5005CE012 /* regions.xml in Resources */,
 				093E35EC236B2DD2007ED4CF /* Assets.xcassets in Resources */,

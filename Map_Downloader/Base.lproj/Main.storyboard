@@ -174,7 +174,50 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="krY-ZS-6mu" id="Ss0-lR-PcS">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QiA-Ac-d5i">
+                                                    <rect key="frame" x="30" y="9" width="315" height="25"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="25" id="KEY-s2-F6J"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ydA-2o-jha">
+                                                    <rect key="frame" x="0.0" y="9.5" width="25" height="25"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="25" id="cRc-VK-Bxy"/>
+                                                        <constraint firstAttribute="width" constant="25" id="psD-wp-Qls"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mSG-Cn-GKg">
+                                                    <rect key="frame" x="350" y="9.5" width="25" height="25"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="25" id="RsI-w4-U9h"/>
+                                                        <constraint firstAttribute="height" constant="25" id="XHl-7Z-rno"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Button"/>
+                                                    <connections>
+                                                        <action selector="toDownload:" destination="krY-ZS-6mu" eventType="touchUpInside" id="Luv-AI-eia"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="mSG-Cn-GKg" firstAttribute="leading" secondItem="QiA-Ac-d5i" secondAttribute="trailing" constant="5" id="4Hb-HU-htP"/>
+                                                <constraint firstAttribute="trailing" secondItem="mSG-Cn-GKg" secondAttribute="trailing" id="5QH-vq-TZE"/>
+                                                <constraint firstItem="ydA-2o-jha" firstAttribute="leading" secondItem="Ss0-lR-PcS" secondAttribute="leading" id="C9U-k2-k9I"/>
+                                                <constraint firstItem="mSG-Cn-GKg" firstAttribute="centerY" secondItem="Ss0-lR-PcS" secondAttribute="centerY" id="M39-qL-7is"/>
+                                                <constraint firstItem="QiA-Ac-d5i" firstAttribute="centerY" secondItem="Ss0-lR-PcS" secondAttribute="centerY" id="aZd-Fs-CHw"/>
+                                                <constraint firstItem="ydA-2o-jha" firstAttribute="centerY" secondItem="Ss0-lR-PcS" secondAttribute="centerY" id="rbi-AY-Zl0"/>
+                                                <constraint firstItem="QiA-Ac-d5i" firstAttribute="leading" secondItem="ydA-2o-jha" secondAttribute="trailing" constant="5" id="zVl-fg-T96"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="downloadButton" destination="mSG-Cn-GKg" id="EyO-Lp-mCp"/>
+                                            <outlet property="mapIcon" destination="ydA-2o-jha" id="SFf-0e-Mlq"/>
+                                            <outlet property="regionName" destination="QiA-Ac-d5i" id="pHA-Z0-apE"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>

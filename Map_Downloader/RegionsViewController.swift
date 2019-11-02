@@ -13,12 +13,31 @@ class RegionsViewController: UIViewController, UITableViewDelegate, UITableViewD
     var country: Country?
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-     return country?.regions.count ?? 0
+        if country?.map == true {
+            return ((country?.regions.count)! + 1)
+        }
+        return (country?.regions.count) ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
         let cell =  regionsTable.dequeueReusableCell(withIdentifier: "RegionCell") as! RegionTableViewCell
-        print (country?.regions[indexPath.row].name)
+        cell.mapIcon.image = UIImage(named: "ic_custom_show_on_map")
+        
+        cell.downloadButton.setImage(UIImage(named: "ic_custom_import"), for: .normal)
+        //print (country?.regions[indexPath.row].name as Any)
+
+        if indexPath.row == (country?.regions.count)! {
+            cell.regionName.text = "Download all regions"
+        } else {
+            cell.regionName.text = country?.regions[indexPath.row].name
+            if country?.regions[indexPath.row].map == false {
+                cell.downloadButton.isHidden = true
+            } else {
+                cell.downloadButton.isHidden = false
+            }
+        }
+        //print(indexPath)
         return cell
     }
     
