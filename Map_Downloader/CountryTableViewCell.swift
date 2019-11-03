@@ -18,6 +18,7 @@ class CountryTableViewCell: UITableViewCell {
     @IBOutlet weak var countryName: UILabel!
     @IBOutlet weak var downloadButton: UIButton!
     @IBOutlet weak var toRegionsButton: UIButton!
+    @IBOutlet weak var progress: UIProgressView!
     @IBAction func toRegions(_ sender: UIButton) {
         if let country = country {
             delegate?.onButtonClick(country: country)

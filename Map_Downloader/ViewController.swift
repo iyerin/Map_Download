@@ -29,7 +29,7 @@ struct Region {
 }
 
 class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate,  UITableViewDataSource {
-
+    
     @IBOutlet weak var countriesTable: UITableView!
     @IBOutlet weak var freeSpace: UILabel!
     @IBOutlet weak var storage: UIProgressView!
@@ -129,10 +129,6 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, 
         }
     }
     
-    func parser(_ parser: XMLParser, foundCharacters string: String) {
-    }
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -142,6 +138,7 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, 
                 parser.parse()
             }
         }
+
 //        for country in countries {
 //            print(country.link)
 ////            if country.map == false {
@@ -159,13 +156,9 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, 
         let totalSpace = Float(UIDevice.current.systemSize!)/1024/1024/1024
         storage.progress = (totalSpace - freeeSpace)/totalSpace
         freeSpace.text = "Free " + "\(freeeSpace)" + " GB"
-       // print(freeSpace, "GB")
-       // print(totalSpace, "GB")
         countries = countries.sorted { $0.name < $1.name }
-        //print(countries)
     }
 
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (countries.count)
     }
@@ -209,36 +202,64 @@ extension UIDevice {
 }
 
 extension ViewController: CountryCellDelegate {
+    
     func onButtonClick(country: Country) {
         //print(country.regions)
         if !country.regions.isEmpty {
+            //print("downloading")
             let storyBoard = UIStoryboard(name: "Main", bundle:nil)
             let regionsViewController = storyBoard.instantiateViewController(withIdentifier: "RegionsViewController") as! RegionsViewController
             regionsViewController.country = country
             self.navigationController?.pushViewController(regionsViewController, animated:true)
         } else {
-//            if let url = URL(string: country.link) {
-//                let urlSession = URLSession(configuration: URLSessionConfiguration.default)
-//                let dataTask = urlSession.dataTask(with: url, completionHandler: { (data, response, error) in
-//                    if let data = data {
-//                        print("~~~> Downloaded")
-//                    }
-//                }).resume()
+            let fileURL = URL(string: country.link)!
+            let documentsUrl:URL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let str = country.link
+            var startIndex = str.index(of: ":")!
+            let upperCase = CharacterSet.uppercaseLetters
+            for currentCharacter in str.unicodeScalars {
+                if upperCase.contains(currentCharacter) {
+                    startIndex = str.index(of: Character(currentCharacter))!
+                    break
+                }
+            }
+            let name = String(str[startIndex...])
+            let destinationFileUrl = documentsUrl.appendingPathComponent(name)
+            print(destinationFileUrl)
+            
+            let sessionConfig = URLSessionConfiguration.default
+            let session = URLSession(configuration: sessionConfig, delegate: self as? URLSessionDelegate, delegateQueue: nil)
+            let request = URLRequest(url:fileURL)
+            let task = session.downloadTask(with: request) { (tempLocalUrl, response, error) in
+                if let tempLocalUrl = tempLocalUrl, error == nil {
+                    if let statusCode = (response as? HTTPURLResponse)?.statusCode {
+                        print("Successfully downloaded. Status code: \(statusCode)")
+                    }
+                    do {
+                        if (FileManager.default.fileExists(atPath: destinationFileUrl.path)) {
+                            try FileManager.default.removeItem(at: destinationFileUrl)
+                            try FileManager.default.copyItem(at: tempLocalUrl, to: destinationFileUrl)
+                        }
+                        else {
+                            try FileManager.default.copyItem(at: tempLocalUrl, to: destinationFileUrl)
+                        }
+                    }
+                    catch (let writeError) {
+                        print("Error creating a file \(destinationFileUrl) : \(writeError)")
+                    }
+                }
+                else {
+                    print("Error took place while downloading a file. Error description");
+                }
+            }
+            task.resume()
+            
+//            func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
+//                print(Float(totalBytesWritten)/Float(totalBytesExpectedToWrite))
+//                //progress.setProgress(Float(totalBytesWritten)/Float(totalBytesExpectedToWrite), animated: true)
 //            }
-            guard let url = URL(string: country.link) else { return }
-            
-            let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
-            
-            let downloadTask = urlSession.downloadTask(with: url)
-            downloadTask.resume()
         }
-        
     }
 }
 
-extension ViewController:  URLSessionDownloadDelegate {
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        print("downloadLocation:", location)
-    }
-}
 
