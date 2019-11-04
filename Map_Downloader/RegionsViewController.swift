@@ -12,6 +12,7 @@ class RegionsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var country: Country?
    // var row: Int?
+    var link: String?
     var regionCell = RegionTableViewCell()
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -24,35 +25,47 @@ class RegionsViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell =  regionsTable.dequeueReusableCell(withIdentifier: "RegionCell") as! RegionTableViewCell
         cell.mapIcon.image = UIImage(named: "ic_custom_show_on_map")
+        //print("t1")
         cell.downloadButton.setImage(UIImage(named: "ic_custom_import"), for: .normal)
         if indexPath.row == (country?.regions.count)! {
             cell.regionName.text = "Download all regions"
+            cell.link = country?.link
         } else {
+            //print(country)
             cell.regionName.text = country?.regions[indexPath.row].name
+            cell.link = country?.regions[indexPath.row].link
             if country?.regions[indexPath.row].map == false {
                 cell.downloadButton.isHidden = true
             } else {
                 cell.downloadButton.isHidden = false
             }
+            if country!.regions[indexPath.row].downloaded == true {
+                print(country!.regions[indexPath.row].name)
+                cell.mapIcon.image = UIImage(named: "green_map")
+                cell.downloadButton.isEnabled = false
+            }
         }
+        cell.progress.isHidden = true
         cell.delegate = self
-        cell.country = country
-       // cell.row = 
+
         return cell
     }
     
 
     @IBOutlet weak var regionsTable: UITableView!
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        print("tytyty")
+        regionsTable.reloadData()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 }
 
 extension RegionsViewController: RegionsCellDelegate {
-    func onRegButtonClick(country: Country, cell: RegionTableViewCell) {
-            print("tyt2")
-            download(country: country, cell: cell)
+    func onRegButtonClick(link: String, cell: RegionTableViewCell) {
+            download(link: link, cell: cell)
         }
 }
 
@@ -79,9 +92,14 @@ extension RegionsViewController: URLSessionDownloadDelegate {
             print("Copy Error: \(error.localizedDescription)")
         }
         DispatchQueue.main.async() {
-            self.regionCell.progress.isHidden = true
-            self.regionCell.mapIcon.image = UIImage(named: "green_map")
-            self.regionCell.downloadButton.isEnabled = false
+            var i = 0
+            for region in self.country!.regions {
+                if region.name == self.regionCell.regionName.text {
+                    break
+                }
+                i += 1
+            }
+            self.regionsTable.reloadData()
         }
     }
     
@@ -92,8 +110,8 @@ extension RegionsViewController: URLSessionDownloadDelegate {
         }
     }
     
-    func download(country: Country, cell: RegionTableViewCell) {
-        guard let url = URL(string: country.link) else { return }
+    func download(link: String, cell: RegionTableViewCell) {
+        guard let url = URL(string: link) else { return }
         let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
         let task = urlSession.downloadTask(with: url)
         task.resume()

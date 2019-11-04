@@ -8,23 +8,29 @@
 
 import UIKit
 protocol RegionsCellDelegate: AnyObject {
-    func onRegButtonClick(country: Country, cell: RegionTableViewCell)
+    func onRegButtonClick(link: String, cell: RegionTableViewCell)
 }
 
 class RegionTableViewCell: UITableViewCell {
-    var country: Country?
+    var link: String?
+    weak var delegate: RegionsCellDelegate?
     
     @IBOutlet weak var mapIcon: UIImageView!
     @IBOutlet weak var regionName: UILabel!
     @IBOutlet weak var downloadButton: UIButton!
     @IBOutlet weak var progress: UIProgressView!
     @IBAction func toDownload(_ sender: UIButton) {
-        print("tyt")
-        if let country = country {
-            print("tyt15")
-            delegate?.onRegButtonClick(country: country, cell: self)
+        if let link = link {
+            delegate?.onRegButtonClick(link: link, cell: self)
         }
     }
-    weak var delegate: RegionsCellDelegate?
+
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        downloadButton.isEnabled = true
+        link = nil
+        delegate = nil
+    }
     
 }
