@@ -11,7 +11,7 @@
 /* TODO
 - optimize code in parsing
 - delete download button
- 
+- scrolling...
  */
  import UIKit
 
@@ -43,6 +43,7 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, 
     var regionMap = true
     var regionLink = String()
     var level = 0
+    var countryCell = CountryTableViewCell()
     
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         if elementName == "region" {
@@ -138,7 +139,6 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, 
                 parser.parse()
             }
         }
-
 //        for country in countries {
 //            print(country.link)
 ////            if country.map == false {
@@ -151,7 +151,6 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, 
 //                print(region.link)
 //            }
 //        }
-        
         let freeeSpace = Float(UIDevice.current.systemFreeSize!)/1024/1024/1024
         let totalSpace = Float(UIDevice.current.systemSize!)/1024/1024/1024
         storage.progress = (totalSpace - freeeSpace)/totalSpace
@@ -175,89 +174,81 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, 
         cell.downloadButton.isHidden = true
         cell.delegate = self
         cell.country = countries[indexPath.row]
-        
+        cell.progress.isHidden = true
         return cell
     }
-
 }
 
 extension UIDevice {
     var systemSize: Int64? {
         guard let systemAttributes = try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory() as String),
-            let totalSize = (systemAttributes[.systemSize] as? NSNumber)?.int64Value else {
-                return nil
-        }
-        
+            let totalSize = (systemAttributes[.systemSize] as? NSNumber)?.int64Value else { return nil }
         return totalSize
     }
-    
     var systemFreeSize: Int64? {
         guard let systemAttributes = try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory() as String),
-            let freeSize = (systemAttributes[.systemFreeSize] as? NSNumber)?.int64Value else {
-                return nil
-        }
-        
+            let freeSize = (systemAttributes[.systemFreeSize] as? NSNumber)?.int64Value else { return nil }
         return freeSize
     }
 }
 
-extension ViewController: CountryCellDelegate {
+extension ViewController: URLSessionDownloadDelegate {
     
-    func onButtonClick(country: Country) {
-        //print(country.regions)
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+        guard let url = downloadTask.originalRequest?.url else { return }
+        let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let str:String = url.absoluteString
+        var startIndex = str.index(of: ":")!
+        let upperCase = CharacterSet.uppercaseLetters
+        for currentCharacter in str.unicodeScalars {
+            if upperCase.contains(currentCharacter) {
+                startIndex = str.index(of: Character(currentCharacter))!
+                break
+            }
+        }
+        let name = String(str[startIndex...])
+        let destinationURL = documentsPath.appendingPathComponent(name)
+        try? FileManager.default.removeItem(at: destinationURL)
+        do {
+            try FileManager.default.copyItem(at: location, to: destinationURL)
+        } catch let error {
+            print("Copy Error: \(error.localizedDescription)")
+        }
+         DispatchQueue.main.async() {
+            self.countryCell.progress.isHidden = true
+            self.countryCell.mapImage.image = UIImage(named: "green_map")
+            self.countryCell.toRegionsButton.isEnabled = false
+        }
+    }
+    
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
+        let progress = Float(totalBytesWritten)/Float(totalBytesExpectedToWrite)
+        DispatchQueue.main.async() {
+            self.countryCell.progress.progress = progress
+        }
+    }
+
+    func download(country: Country, cell: CountryTableViewCell) {
+        guard let url = URL(string: country.link) else { return }
+        let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
+        let task = urlSession.downloadTask(with: url)
+        task.resume()
+        self.countryCell = cell
+        self.countryCell.progress.progress = 0
+        self.countryCell.progress.isHidden = false
+    }
+}
+
+extension ViewController: CountryCellDelegate {
+
+    func onButtonClick(country: Country, cell: CountryTableViewCell) {
         if !country.regions.isEmpty {
-            //print("downloading")
             let storyBoard = UIStoryboard(name: "Main", bundle:nil)
             let regionsViewController = storyBoard.instantiateViewController(withIdentifier: "RegionsViewController") as! RegionsViewController
             regionsViewController.country = country
             self.navigationController?.pushViewController(regionsViewController, animated:true)
         } else {
-            let fileURL = URL(string: country.link)!
-            let documentsUrl:URL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            let str = country.link
-            var startIndex = str.index(of: ":")!
-            let upperCase = CharacterSet.uppercaseLetters
-            for currentCharacter in str.unicodeScalars {
-                if upperCase.contains(currentCharacter) {
-                    startIndex = str.index(of: Character(currentCharacter))!
-                    break
-                }
-            }
-            let name = String(str[startIndex...])
-            let destinationFileUrl = documentsUrl.appendingPathComponent(name)
-            print(destinationFileUrl)
-            
-            let sessionConfig = URLSessionConfiguration.default
-            let session = URLSession(configuration: sessionConfig, delegate: self as? URLSessionDelegate, delegateQueue: nil)
-            let request = URLRequest(url:fileURL)
-            let task = session.downloadTask(with: request) { (tempLocalUrl, response, error) in
-                if let tempLocalUrl = tempLocalUrl, error == nil {
-                    if let statusCode = (response as? HTTPURLResponse)?.statusCode {
-                        print("Successfully downloaded. Status code: \(statusCode)")
-                    }
-                    do {
-                        if (FileManager.default.fileExists(atPath: destinationFileUrl.path)) {
-                            try FileManager.default.removeItem(at: destinationFileUrl)
-                            try FileManager.default.copyItem(at: tempLocalUrl, to: destinationFileUrl)
-                        }
-                        else {
-                            try FileManager.default.copyItem(at: tempLocalUrl, to: destinationFileUrl)
-                        }
-                    }
-                    catch (let writeError) {
-                        print("Error creating a file \(destinationFileUrl) : \(writeError)")
-                    }
-                }
-                else {
-                    print("Error took place while downloading a file. Error description");
-                }
-            }
-            task.resume()
-            
-//            func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
-//                print(Float(totalBytesWritten)/Float(totalBytesExpectedToWrite))
-//                //progress.setProgress(Float(totalBytesWritten)/Float(totalBytesExpectedToWrite), animated: true)
-//            }
+            download(country: country, cell: cell)
         }
     }
 }

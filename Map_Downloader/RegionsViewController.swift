@@ -11,6 +11,8 @@ import UIKit
 class RegionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var country: Country?
+   // var row: Int?
+    var regionCell = RegionTableViewCell()
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if country?.map == true {
@@ -20,13 +22,9 @@ class RegionsViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
         let cell =  regionsTable.dequeueReusableCell(withIdentifier: "RegionCell") as! RegionTableViewCell
         cell.mapIcon.image = UIImage(named: "ic_custom_show_on_map")
-        
         cell.downloadButton.setImage(UIImage(named: "ic_custom_import"), for: .normal)
-        //print (country?.regions[indexPath.row].name as Any)
-
         if indexPath.row == (country?.regions.count)! {
             cell.regionName.text = "Download all regions"
         } else {
@@ -37,7 +35,9 @@ class RegionsViewController: UIViewController, UITableViewDelegate, UITableViewD
                 cell.downloadButton.isHidden = false
             }
         }
-        //print(indexPath)
+        cell.delegate = self
+        cell.country = country
+       // cell.row = 
         return cell
     }
     
@@ -46,9 +46,59 @@ class RegionsViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
+}
 
- 
+extension RegionsViewController: RegionsCellDelegate {
+    func onRegButtonClick(country: Country, cell: RegionTableViewCell) {
+            print("tyt2")
+            download(country: country, cell: cell)
+        }
+}
 
+extension RegionsViewController: URLSessionDownloadDelegate {
+    
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+        guard let url = downloadTask.originalRequest?.url else { return }
+        let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let str:String = url.absoluteString
+        var startIndex = str.index(of: ":")!
+        let upperCase = CharacterSet.uppercaseLetters
+        for currentCharacter in str.unicodeScalars {
+            if upperCase.contains(currentCharacter) {
+                startIndex = str.index(of: Character(currentCharacter))!
+                break
+            }
+        }
+        let name = String(str[startIndex...])
+        let destinationURL = documentsPath.appendingPathComponent(name)
+        try? FileManager.default.removeItem(at: destinationURL)
+        do {
+            try FileManager.default.copyItem(at: location, to: destinationURL)
+        } catch let error {
+            print("Copy Error: \(error.localizedDescription)")
+        }
+        DispatchQueue.main.async() {
+            self.regionCell.progress.isHidden = true
+            self.regionCell.mapIcon.image = UIImage(named: "green_map")
+            self.regionCell.downloadButton.isEnabled = false
+        }
+    }
+    
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
+        let progress = Float(totalBytesWritten)/Float(totalBytesExpectedToWrite)
+        DispatchQueue.main.async() {
+            self.regionCell.progress.progress = progress
+        }
+    }
+    
+    func download(country: Country, cell: RegionTableViewCell) {
+        guard let url = URL(string: country.link) else { return }
+        let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
+        let task = urlSession.downloadTask(with: url)
+        task.resume()
+        self.regionCell = cell
+        self.regionCell.progress.progress = 0
+        self.regionCell.progress.isHidden = false
+    }
 }

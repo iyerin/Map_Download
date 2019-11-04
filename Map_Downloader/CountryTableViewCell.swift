@@ -8,7 +8,7 @@
 
 import UIKit
 protocol CountryCellDelegate: AnyObject {
-    func onButtonClick(country: Country)
+    func onButtonClick(country: Country, cell: CountryTableViewCell)
 }
 
 class CountryTableViewCell: UITableViewCell {
@@ -21,7 +21,7 @@ class CountryTableViewCell: UITableViewCell {
     @IBOutlet weak var progress: UIProgressView!
     @IBAction func toRegions(_ sender: UIButton) {
         if let country = country {
-            delegate?.onButtonClick(country: country)
+            delegate?.onButtonClick(country: country, cell: self)
         }
     }
     weak var delegate: CountryCellDelegate?
