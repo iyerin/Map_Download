@@ -15,6 +15,26 @@ class RegionsViewController: UIViewController, UITableViewDelegate, UITableViewD
     var link: String?
     var regionCell = RegionTableViewCell()
     
+    private func checkFile(link: String) -> Bool {
+        let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let str = link
+        var startIndex = str.index(of: ":")!
+        let upperCase = CharacterSet.uppercaseLetters
+        for currentCharacter in str.unicodeScalars {
+            if upperCase.contains(currentCharacter) {
+                startIndex = str.index(of: Character(currentCharacter))!
+                break
+            }
+        }
+        let name = String(str[startIndex...])
+        let destinationURL = documentsPath.appendingPathComponent(name)
+        let filePath = destinationURL.path
+        if FileManager.default.fileExists(atPath: filePath) {
+            return (true)
+        }
+        return(false)
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if country?.map == true {
             return ((country?.regions.count)! + 1)
@@ -25,7 +45,6 @@ class RegionsViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell =  regionsTable.dequeueReusableCell(withIdentifier: "RegionCell") as! RegionTableViewCell
         cell.mapIcon.image = UIImage(named: "ic_custom_show_on_map")
-        //print("t1")
         cell.downloadButton.setImage(UIImage(named: "ic_custom_import"), for: .normal)
         if indexPath.row == (country?.regions.count)! {
             cell.regionName.text = "Download all regions"
@@ -39,11 +58,14 @@ class RegionsViewController: UIViewController, UITableViewDelegate, UITableViewD
             } else {
                 cell.downloadButton.isHidden = false
             }
+            let downloaded = checkFile(link: (country?.regions[indexPath.row].link) ?? "")
+            country?.regions[indexPath.row].downloaded = downloaded
             if country!.regions[indexPath.row].downloaded == true {
                 print(country!.regions[indexPath.row].name)
                 cell.mapIcon.image = UIImage(named: "green_map")
                 cell.downloadButton.isEnabled = false
             }
+            
         }
         cell.progress.isHidden = true
         cell.delegate = self
@@ -99,6 +121,7 @@ extension RegionsViewController: URLSessionDownloadDelegate {
                 }
                 i += 1
             }
+            self.country?.regions[i].downloaded = true
             self.regionsTable.reloadData()
         }
     }

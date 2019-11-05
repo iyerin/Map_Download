@@ -30,9 +30,8 @@ class CountryTableViewCell: UITableViewCell {
         super.prepareForReuse()
         downloadButton.isHidden = false
         toRegionsButton.isHidden = false
-        
-        mapImage.image = UIImage(named: "green_map")
         toRegionsButton.isEnabled = true
+        
         
         country = nil
         delegate = nil

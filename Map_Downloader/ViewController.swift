@@ -48,7 +48,7 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, 
     var countryCell = CountryTableViewCell()
     var downloaded = false
     
-    func checkFile(link: String) -> Bool {
+    private func checkFile(link: String) -> Bool {
         let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let str = link
         var startIndex = str.index(of: ":")!
@@ -147,7 +147,8 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, 
                     }
                 }
                 let link = "http://download.osmand.net/download.php?standard=yes&file=" + countryLink + "_" + regionLink + "_europe_2.obf.zip"
-                let region = Region(name: regionName, map: regionMap, link: link, downloaded: false)
+                let downloaded = checkFile(link: link)
+                let region = Region(name: regionName, map: regionMap, link: link, downloaded: downloaded)
                 countries[countries.count - 1].regions.append(region)
             }
         }
@@ -165,27 +166,6 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, 
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0])
         
         
-        /*
-         guard let url = downloadTask.originalRequest?.url else { return }
-         let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-         let str:String = url.absoluteString
-         var startIndex = str.index(of: ":")!
-         let upperCase = CharacterSet.uppercaseLetters
-         for currentCharacter in str.unicodeScalars {
-         if upperCase.contains(currentCharacter) {
-         startIndex = str.index(of: Character(currentCharacter))!
-         break
-         }
-         }
-         let name = String(str[startIndex...])
-         let destinationURL = documentsPath.appendingPathComponent(name)
-         try? FileManager.default.removeItem(at: destinationURL)
-         do {
-         try FileManager.default.copyItem(at: location, to: destinationURL)
-         } catch let error {
-         print("Copy Error: \(error.localizedDescription)")
-         }
-         */
         if let path = Bundle.main.url(forResource: "regions", withExtension: "xml") {
             if let parser = XMLParser(contentsOf: path) {
                 parser.delegate = self
@@ -214,6 +194,9 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (countries.count)
     }
+    override func viewWillAppear(_ animated: Bool) {
+        countriesTable.reloadData()
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = countriesTable.dequeueReusableCell(withIdentifier: "CountryCell") as! CountryTableViewCell
@@ -228,7 +211,7 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, 
         cell.delegate = self
         cell.country = countries[indexPath.row]
         cell.progress.isHidden = true
-        
+        countries[indexPath.row].downloaded = checkFile(link: countries[indexPath.row].link)
         if countries[indexPath.row].downloaded == true {
             cell.mapImage.image = UIImage(named: "green_map")
             cell.toRegionsButton.isEnabled = false
