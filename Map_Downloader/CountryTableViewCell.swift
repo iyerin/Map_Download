@@ -16,7 +16,6 @@ class CountryTableViewCell: UITableViewCell {
     var country: Country?
     @IBOutlet weak var mapImage: UIImageView!
     @IBOutlet weak var countryName: UILabel!
-    @IBOutlet weak var downloadButton: UIButton!
     @IBOutlet weak var toRegionsButton: UIButton!
     @IBOutlet weak var progress: UIProgressView!
     @IBAction func toRegions(_ sender: UIButton) {
@@ -28,11 +27,8 @@ class CountryTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        downloadButton.isHidden = false
         toRegionsButton.isHidden = false
         toRegionsButton.isEnabled = true
-        
-        
         country = nil
         delegate = nil
     }

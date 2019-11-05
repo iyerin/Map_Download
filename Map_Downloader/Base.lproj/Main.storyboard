@@ -80,7 +80,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K19-qg-P5p">
-                                                    <rect key="frame" x="35" y="5" width="275" height="20"/>
+                                                    <rect key="frame" x="35" y="15" width="305" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="fAj-7f-fGJ"/>
                                                     </constraints>
@@ -88,50 +88,40 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pRs-3A-L2O">
-                                                    <rect key="frame" x="315" y="12.5" width="25" height="25"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="25" id="hmP-du-lTC"/>
-                                                        <constraint firstAttribute="height" constant="25" id="tNC-Kr-Qwz"/>
-                                                    </constraints>
-                                                    <state key="normal" title="Button"/>
-                                                </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pcD-Vd-AId">
                                                     <rect key="frame" x="345" y="12.5" width="25" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="5eL-kR-DFH"/>
                                                         <constraint firstAttribute="width" constant="25" id="ghe-uh-oIA"/>
                                                     </constraints>
+                                                    <color key="tintColor" red="1" green="0.53333333333333333" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <state key="normal" title="Button"/>
                                                     <connections>
                                                         <action selector="toRegions:" destination="bBn-kx-6LM" eventType="touchUpInside" id="4Id-2i-tG7"/>
                                                     </connections>
                                                 </button>
                                                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="1Jd-44-7t6">
-                                                    <rect key="frame" x="35" y="39.5" width="290" height="5"/>
+                                                    <rect key="frame" x="35" y="45.5" width="290" height="3"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="5" id="3yZ-5n-Pg3"/>
+                                                        <constraint firstAttribute="height" constant="3" id="3yZ-5n-Pg3"/>
                                                     </constraints>
                                                 </progressView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="pcD-Vd-AId" secondAttribute="trailing" constant="5" id="4a9-Id-MHM"/>
-                                                <constraint firstItem="pRs-3A-L2O" firstAttribute="leading" secondItem="K19-qg-P5p" secondAttribute="trailing" constant="5" id="9KO-Im-OZu"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="1Jd-44-7t6" secondAttribute="trailing" constant="35" id="GQg-i6-GcS"/>
+                                                <constraint firstItem="K19-qg-P5p" firstAttribute="centerY" secondItem="0av-B2-jQ1" secondAttribute="centerY" id="HAD-hg-hcD"/>
                                                 <constraint firstItem="Fd5-C4-rYj" firstAttribute="centerY" secondItem="0av-B2-jQ1" secondAttribute="centerY" id="N49-ld-YlE"/>
                                                 <constraint firstItem="K19-qg-P5p" firstAttribute="leading" secondItem="Fd5-C4-rYj" secondAttribute="trailing" constant="5" id="OTx-Jt-dbw"/>
-                                                <constraint firstItem="pcD-Vd-AId" firstAttribute="leading" secondItem="pRs-3A-L2O" secondAttribute="trailing" constant="5" id="Ps6-b2-WjB"/>
                                                 <constraint firstItem="pcD-Vd-AId" firstAttribute="centerY" secondItem="0av-B2-jQ1" secondAttribute="centerY" id="dcD-SN-b4u"/>
-                                                <constraint firstItem="K19-qg-P5p" firstAttribute="top" secondItem="0av-B2-jQ1" secondAttribute="top" constant="5" id="iUE-tG-Pcp"/>
-                                                <constraint firstAttribute="bottom" secondItem="1Jd-44-7t6" secondAttribute="bottom" constant="5" id="j4q-fa-cFB"/>
+                                                <constraint firstItem="pcD-Vd-AId" firstAttribute="leading" secondItem="K19-qg-P5p" secondAttribute="trailing" constant="5" id="i3i-2B-BfW"/>
+                                                <constraint firstAttribute="bottom" secondItem="1Jd-44-7t6" secondAttribute="bottom" constant="1" id="j4q-fa-cFB"/>
                                                 <constraint firstItem="1Jd-44-7t6" firstAttribute="leading" secondItem="0av-B2-jQ1" secondAttribute="leading" constant="35" id="jSx-wU-NHL"/>
                                                 <constraint firstItem="Fd5-C4-rYj" firstAttribute="leading" secondItem="0av-B2-jQ1" secondAttribute="leading" constant="5" id="mKL-Sh-BnR"/>
-                                                <constraint firstItem="pRs-3A-L2O" firstAttribute="centerY" secondItem="0av-B2-jQ1" secondAttribute="centerY" id="vuo-SF-moW"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="countryName" destination="K19-qg-P5p" id="U5B-gJ-arr"/>
-                                            <outlet property="downloadButton" destination="pRs-3A-L2O" id="UmC-60-Hpu"/>
                                             <outlet property="mapImage" destination="Fd5-C4-rYj" id="9SE-JA-qtu"/>
                                             <outlet property="progress" destination="1Jd-44-7t6" id="3XD-EL-kvQ"/>
                                             <outlet property="toRegionsButton" destination="pcD-Vd-AId" id="fne-3l-Ks1"/>
@@ -156,7 +146,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Download Maps" id="tFd-6s-fJu"/>
+                    <navigationItem key="navigationItem" title="Download Maps" id="tFd-6s-fJu">
+                        <barButtonItem key="backBarButtonItem" title=" " id="szL-bw-GcJ"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="countriesTable" destination="DzC-s6-MD3" id="43d-db-1BH"/>
                         <outlet property="freeSpace" destination="RJE-GW-aIQ" id="9KS-0d-ngk"/>
@@ -205,13 +197,13 @@
                                                     </connections>
                                                 </button>
                                                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="TvX-8k-ObR">
-                                                    <rect key="frame" x="30" y="33.5" width="315" height="5"/>
+                                                    <rect key="frame" x="30" y="38.5" width="315" height="3"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="5" id="5We-mO-YuF"/>
+                                                        <constraint firstAttribute="height" constant="3" id="5We-mO-YuF"/>
                                                     </constraints>
                                                 </progressView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QiA-Ac-d5i">
-                                                    <rect key="frame" x="30" y="0.0" width="315" height="25"/>
+                                                    <rect key="frame" x="30" y="9.5" width="315" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="KEY-s2-F6J"/>
                                                     </constraints>
@@ -226,9 +218,9 @@
                                                 <constraint firstItem="ydA-2o-jha" firstAttribute="leading" secondItem="Ss0-lR-PcS" secondAttribute="leading" id="C9U-k2-k9I"/>
                                                 <constraint firstItem="mSG-Cn-GKg" firstAttribute="leading" secondItem="TvX-8k-ObR" secondAttribute="trailing" constant="5" id="DsZ-Ue-vz9"/>
                                                 <constraint firstItem="mSG-Cn-GKg" firstAttribute="centerY" secondItem="Ss0-lR-PcS" secondAttribute="centerY" id="M39-qL-7is"/>
-                                                <constraint firstItem="QiA-Ac-d5i" firstAttribute="top" secondItem="Ss0-lR-PcS" secondAttribute="top" id="Z85-nU-gO8"/>
-                                                <constraint firstAttribute="bottom" secondItem="TvX-8k-ObR" secondAttribute="bottom" constant="5" id="n8r-FE-ZJg"/>
+                                                <constraint firstAttribute="bottom" secondItem="TvX-8k-ObR" secondAttribute="bottom" constant="2" id="n8r-FE-ZJg"/>
                                                 <constraint firstItem="ydA-2o-jha" firstAttribute="centerY" secondItem="Ss0-lR-PcS" secondAttribute="centerY" id="rbi-AY-Zl0"/>
+                                                <constraint firstItem="QiA-Ac-d5i" firstAttribute="centerY" secondItem="Ss0-lR-PcS" secondAttribute="centerY" id="sH3-I6-ifs"/>
                                                 <constraint firstItem="QiA-Ac-d5i" firstAttribute="leading" secondItem="ydA-2o-jha" secondAttribute="trailing" constant="5" id="zVl-fg-T96"/>
                                                 <constraint firstItem="TvX-8k-ObR" firstAttribute="leading" secondItem="ydA-2o-jha" secondAttribute="trailing" constant="5" id="zk7-xI-UFs"/>
                                             </constraints>

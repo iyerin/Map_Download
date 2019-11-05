@@ -9,9 +9,7 @@
 
 
 /* TODO
-- optimize code in parsing
-- delete download button
-- scrolling...
+- download all regions
  */
  import UIKit
 
@@ -47,6 +45,7 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, 
     var level = 0
     var countryCell = CountryTableViewCell()
     var downloaded = false
+    var continent = String()
     
     private func checkFile(link: String) -> Bool {
         let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -67,13 +66,24 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, 
         }
         return(false)
     }
-    
+    func parseRegion() {
+        
+    }
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         if elementName == "region" {
             countryMap = true
             regionMap = true
             downloaded = false
             level += 1
+            if level == 1 {
+                if let type = attributeDict["type"] {
+                    if type == "continent" {
+                        if let name = attributeDict["name"] {
+                         continent = name.capitalized
+                        }
+                    }
+                }
+            }
             if level == 2 {
                 if let name = attributeDict["name"] {
                     countryName = name
@@ -108,11 +118,7 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, 
                     }
                 }
                 let link = "http://download.osmand.net/download.php?standard=yes&file=" + countryLink + "_europe_2.obf.zip"
-                //==================================
                 downloaded = checkFile(link: link)
-                
-                
-                //===================================
                 let country = Country(name: countryName, regions: [], map: countryMap, link: link, downloaded: downloaded)
                 countries.append(country)
             }
@@ -162,35 +168,26 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //===============================================
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0])
-        
-        
         if let path = Bundle.main.url(forResource: "regions", withExtension: "xml") {
             if let parser = XMLParser(contentsOf: path) {
                 parser.delegate = self
                 parser.parse()
             }
         }
-//        for country in countries {
-//            print(country.link)
-////            if country.map == false {
-////                print(country.name)
-////            }
-//            for region in country.regions {
-////                if region.map == false {
-////                    print(region.name)
-////                }
-//                print(region.link)
-//            }
-//        }
+        navigationController?.navigationBar.barTintColor = UIColor(red: 255/255, green: 136/255, blue: 0, alpha: 1)
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         let freeeSpace = Float(UIDevice.current.systemFreeSize!)/1024/1024/1024
         let totalSpace = Float(UIDevice.current.systemSize!)/1024/1024/1024
         storage.progress = (totalSpace - freeeSpace)/totalSpace
         freeSpace.text = "Free " + "\(freeeSpace)" + " GB"
+        storage.tintColor = UIColor(red: 255/255, green: 136/255, blue: 0, alpha: 1)
+        storage.trackTintColor = UIColor(red: 242/255, green: 242/255, blue: 243/255, alpha: 1.0)
         countries = countries.sorted { $0.name < $1.name }
     }
 
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return (continent)
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (countries.count)
     }
@@ -207,7 +204,6 @@ class ViewController: UIViewController, XMLParserDelegate, UITableViewDelegate, 
         } else {
              cell.toRegionsButton.setImage(UIImage(named: "right_arrow"), for: .normal)
         }
-        cell.downloadButton.isHidden = true
         cell.delegate = self
         cell.country = countries[indexPath.row]
         cell.progress.isHidden = true

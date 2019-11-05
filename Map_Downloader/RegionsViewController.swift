@@ -50,7 +50,6 @@ class RegionsViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell.regionName.text = "Download all regions"
             cell.link = country?.link
         } else {
-            //print(country)
             cell.regionName.text = country?.regions[indexPath.row].name
             cell.link = country?.regions[indexPath.row].link
             if country?.regions[indexPath.row].map == false {
@@ -61,7 +60,6 @@ class RegionsViewController: UIViewController, UITableViewDelegate, UITableViewD
             let downloaded = checkFile(link: (country?.regions[indexPath.row].link) ?? "")
             country?.regions[indexPath.row].downloaded = downloaded
             if country!.regions[indexPath.row].downloaded == true {
-                print(country!.regions[indexPath.row].name)
                 cell.mapIcon.image = UIImage(named: "green_map")
                 cell.downloadButton.isEnabled = false
             }
@@ -77,11 +75,20 @@ class RegionsViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var regionsTable: UITableView!
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        print("tytyty")
         regionsTable.reloadData()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        let label = UILabel()
+        label.text = country?.name
+        label.textAlignment = .left
+        label.textColor = .white
+        self.navigationItem.titleView = label
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.superview?.addConstraint(NSLayoutConstraint(item: label, attribute: .centerX, relatedBy: .equal, toItem: label.superview, attribute: .centerX, multiplier: 1, constant: 0))
+        label.superview?.addConstraint(NSLayoutConstraint(item: label, attribute: .width, relatedBy: .equal, toItem: label.superview, attribute: .width, multiplier: 1, constant: 0))
+        label.superview?.addConstraint(NSLayoutConstraint(item: label, attribute: .centerY, relatedBy: .equal, toItem: label.superview, attribute: .centerY, multiplier: 1, constant: 0))
+        label.superview?.addConstraint(NSLayoutConstraint(item: label, attribute: .height, relatedBy: .equal, toItem: label.superview, attribute: .height, multiplier: 1, constant: 0))
     }
 }
 
@@ -120,6 +127,9 @@ extension RegionsViewController: URLSessionDownloadDelegate {
                     break
                 }
                 i += 1
+            }
+            if i == (self.country?.regions.count)! - 1 {
+
             }
             self.country?.regions[i].downloaded = true
             self.regionsTable.reloadData()
