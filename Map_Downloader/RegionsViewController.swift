@@ -11,33 +11,27 @@ import UIKit
 class RegionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var country: Country?
-   // var row: Int?
     var link: String?
     var regionCell = RegionTableViewCell()
+    @IBOutlet weak var regionsTable: UITableView!
     
-    private func checkFile(link: String) -> Bool {
-        let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let str = link
-        var startIndex = str.index(of: ":")!
-        let upperCase = CharacterSet.uppercaseLetters
-        for currentCharacter in str.unicodeScalars {
-            if upperCase.contains(currentCharacter) {
-                startIndex = str.index(of: Character(currentCharacter))!
-                break
-            }
-        }
-        let name = String(str[startIndex...])
-        let destinationURL = documentsPath.appendingPathComponent(name)
-        let filePath = destinationURL.path
-        if FileManager.default.fileExists(atPath: filePath) {
-            return (true)
-        }
-        return(false)
+    //MARK: - Lifecycle
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        regionsTable.reloadData()
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.title = country?.name
+    }
+    
+    //MARK: - TableView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if country?.map == true {
-            return ((country?.regions.count)! + 1)
+            return ((country?.regions.count ?? 0) + 1)
         }
         return (country?.regions.count) ?? 0
     }
@@ -57,7 +51,7 @@ class RegionsViewController: UIViewController, UITableViewDelegate, UITableViewD
             } else {
                 cell.downloadButton.isHidden = false
             }
-            let downloaded = checkFile(link: (country?.regions[indexPath.row].link) ?? "")
+            let downloaded = MapsFileManager.checkFile(link: (country?.regions[indexPath.row].link) ?? "")
             country?.regions[indexPath.row].downloaded = downloaded
             if country!.regions[indexPath.row].downloaded == true {
                 cell.mapIcon.image = UIImage(named: "green_map")
@@ -67,36 +61,20 @@ class RegionsViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         cell.progress.isHidden = true
         cell.delegate = self
-
+        
         return cell
     }
-    
-
-    @IBOutlet weak var regionsTable: UITableView!
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        regionsTable.reloadData()
-    }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        let label = UILabel()
-        label.text = country?.name
-        label.textAlignment = .left
-        label.textColor = .white
-        self.navigationItem.titleView = label
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.superview?.addConstraint(NSLayoutConstraint(item: label, attribute: .centerX, relatedBy: .equal, toItem: label.superview, attribute: .centerX, multiplier: 1, constant: 0))
-        label.superview?.addConstraint(NSLayoutConstraint(item: label, attribute: .width, relatedBy: .equal, toItem: label.superview, attribute: .width, multiplier: 1, constant: 0))
-        label.superview?.addConstraint(NSLayoutConstraint(item: label, attribute: .centerY, relatedBy: .equal, toItem: label.superview, attribute: .centerY, multiplier: 1, constant: 0))
-        label.superview?.addConstraint(NSLayoutConstraint(item: label, attribute: .height, relatedBy: .equal, toItem: label.superview, attribute: .height, multiplier: 1, constant: 0))
-    }
 }
+
+//MARK: - CellDelegate
 
 extension RegionsViewController: RegionsCellDelegate {
     func onRegButtonClick(link: String, cell: RegionTableViewCell) {
             download(link: link, cell: cell)
         }
 }
+
+// MARK: - Download
 
 extension RegionsViewController: URLSessionDownloadDelegate {
     
@@ -128,10 +106,11 @@ extension RegionsViewController: URLSessionDownloadDelegate {
                 }
                 i += 1
             }
-            if i == (self.country?.regions.count)! - 1 {
-
+            if i == (self.country?.regions.count)! {
+           _ = self.navigationController?.popToRootViewController(animated: true)
+            } else {
+                self.country?.regions[i].downloaded = true
             }
-            self.country?.regions[i].downloaded = true
             self.regionsTable.reloadData()
         }
     }

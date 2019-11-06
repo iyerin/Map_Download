@@ -15,6 +15,10 @@
 		09631F58236C93AC00F09CBD /* RegionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09631F57236C93AC00F09CBD /* RegionsViewController.swift */; };
 		09B6FE21236C5F8F004AB6BA /* CountryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B6FE20236C5F8F004AB6BA /* CountryTableViewCell.swift */; };
 		09B6FE23236C6863004AB6BA /* RegionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B6FE22236C6863004AB6BA /* RegionTableViewCell.swift */; };
+		09E2E6BC2372CCB800DCF948 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E2E6BB2372CCB800DCF948 /* Country.swift */; };
+		09E2E6BE2372CCD400DCF948 /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E2E6BD2372CCD400DCF948 /* Region.swift */; };
+		09E2E6C02372CE9700DCF948 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E2E6BF2372CE9700DCF948 /* Parser.swift */; };
+		09E2E6C42372DF6D00DCF948 /* MapsFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E2E6C32372DF6D00DCF948 /* MapsFileManager.swift */; };
 		7829121A236B7DA5005CE012 /* regions.xml in Resources */ = {isa = PBXBuildFile; fileRef = 78291219236B7DA5005CE012 /* regions.xml */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +33,10 @@
 		09631F57236C93AC00F09CBD /* RegionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionsViewController.swift; sourceTree = "<group>"; };
 		09B6FE20236C5F8F004AB6BA /* CountryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryTableViewCell.swift; sourceTree = "<group>"; };
 		09B6FE22236C6863004AB6BA /* RegionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionTableViewCell.swift; sourceTree = "<group>"; };
+		09E2E6BB2372CCB800DCF948 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
+		09E2E6BD2372CCD400DCF948 /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
+		09E2E6BF2372CE9700DCF948 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		09E2E6C32372DF6D00DCF948 /* MapsFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsFileManager.swift; sourceTree = "<group>"; };
 		78291219236B7DA5005CE012 /* regions.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = regions.xml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -62,11 +70,15 @@
 		093E35E3236B2DD2007ED4CF /* Map_Downloader */ = {
 			isa = PBXGroup;
 			children = (
+				09E2E6BF2372CE9700DCF948 /* Parser.swift */,
 				093E35E4236B2DD2007ED4CF /* AppDelegate.swift */,
+				09E2E6BB2372CCB800DCF948 /* Country.swift */,
+				09E2E6BD2372CCD400DCF948 /* Region.swift */,
 				093E35E6236B2DD2007ED4CF /* ViewController.swift */,
 				78291219236B7DA5005CE012 /* regions.xml */,
 				093E35E8236B2DD2007ED4CF /* Main.storyboard */,
 				09631F57236C93AC00F09CBD /* RegionsViewController.swift */,
+				09E2E6C32372DF6D00DCF948 /* MapsFileManager.swift */,
 				09B6FE20236C5F8F004AB6BA /* CountryTableViewCell.swift */,
 				09B6FE22236C6863004AB6BA /* RegionTableViewCell.swift */,
 				093E35EB236B2DD2007ED4CF /* Assets.xcassets */,
@@ -153,6 +165,10 @@
 				093E35E5236B2DD2007ED4CF /* AppDelegate.swift in Sources */,
 				09B6FE23236C6863004AB6BA /* RegionTableViewCell.swift in Sources */,
 				09631F58236C93AC00F09CBD /* RegionsViewController.swift in Sources */,
+				09E2E6C42372DF6D00DCF948 /* MapsFileManager.swift in Sources */,
+				09E2E6C02372CE9700DCF948 /* Parser.swift in Sources */,
+				09E2E6BE2372CCD400DCF948 /* Region.swift in Sources */,
+				09E2E6BC2372CCB800DCF948 /* Country.swift in Sources */,
 				09B6FE21236C5F8F004AB6BA /* CountryTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
